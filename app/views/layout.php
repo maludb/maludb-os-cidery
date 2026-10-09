@@ -72,6 +72,7 @@ $appName = (string) config('app.name', 'Cidery');
             </div>
             <div class="header-right ms-auto">
                 <div class="d-flex align-items-center">
+                    <?= view('shared/app-switcher.php') ?>
                     <div class="nxl-h-item dark-light-theme">
                         <a href="javascript:void(0);" class="nxl-head-link me-0 dark-button" id="header-dark-btn"><i class="feather-moon"></i></a>
                         <a href="javascript:void(0);" class="nxl-head-link me-0 light-button" id="header-light-btn" style="display: none"><i class="feather-sun"></i></a>

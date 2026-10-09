@@ -34,6 +34,7 @@ require_once __DIR__ . '/units.php';
 require_once __DIR__ . '/activity.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/os.php';
+require_once __DIR__ . '/switcher.php';
 require_once __DIR__ . '/json_mode.php';
 require_once __DIR__ . '/mail.php';
 require_once __DIR__ . '/totp.php';
