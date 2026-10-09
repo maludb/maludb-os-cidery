@@ -40,6 +40,7 @@ require_once __DIR__ . '/totp.php';
 require_once __DIR__ . '/navigation.php';
 require_once __DIR__ . '/list.php';
 require_once __DIR__ . '/ui.php';
+require_once __DIR__ . '/picker.php';
 
 // Unhandled exceptions: log the detail, show a plain error, never the message.
 set_exception_handler(static function (Throwable $exception): void {

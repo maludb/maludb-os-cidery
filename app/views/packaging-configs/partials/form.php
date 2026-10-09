@@ -14,7 +14,7 @@ $p = 'packaging-config-form';
                 <div class="card-body">
                     <div class="mb-4"><h5 class="fw-bold mb-0 me-4"><span class="d-block mb-2">Packaging configuration</span><span class="fs-12 fw-normal text-muted text-truncate-1-line">How a product is packaged: the finished item, the fill volume and the bill of materials per unit.</span></h5></div>
                     <?= view('shared/validation-errors.php', ['errors' => array_values($errors), 'id' => 'packaging-config-form-errors']) ?>
-                    <?= form_select($p, 'product', 'Product', $products, $config['product_id'] ?? '', $errors, ['required' => true, 'blank' => 'Choose a product', 'name' => 'product_id']) ?>
+                    <?= form_picker($p, 'product', 'Product', 'product', $config['product_id'] ?? '', $errors, ['required' => true, 'placeholder' => 'Choose a product', 'name' => 'product_id']) ?>
                     <?= form_select($p, 'finished_item', 'Finished item', $finishedItems, $config['finished_item_id'] ?? '', $errors, ['required' => true, 'blank' => 'Choose a finished item', 'name' => 'finished_item_id']) ?>
                     <?= form_input($p, 'name', 'Name', $config['name'] ?? '', $errors, ['required' => true, 'maxlength' => 120, 'icon' => 'feather-box']) ?>
                     <?= form_select($p, 'package_kind', 'Package kind', PACKAGE_KINDS, $config['package_kind'] ?? 'can', $errors, ['required' => true]) ?>

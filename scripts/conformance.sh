@@ -11,6 +11,7 @@ for f in "$@"; do
     php -l "$file" >/dev/null 2>&1 || { echo "FAIL lint $file"; fail=1; }
   done
   if grep -n 'hx-push-url="true"' $files; then echo "FAIL $f: hx-push-url=\"true\""; fail=1; fi
+  # The one modal is the shell's record picker (app/views/layout.php, app/picker.php); a feature never adds another.
   if grep -nE 'class="[^"]*\bmodal\b' $files; then echo "FAIL $f: .modal"; fail=1; fi
   if grep -nE '<\?=\s*\$[a-zA-Z_]+\[' $(find app/views/$f -name '*.php' 2>/dev/null) /dev/null | grep -v 'e(' ; then echo "WARN $f: unescaped array output above (check)"; fi
   for file in html/$f/*.php; do

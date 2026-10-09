@@ -14,7 +14,7 @@ $p = 'approval-form';
                 <div class="card-body">
                     <div class="mb-4"><h5 class="fw-bold mb-0 me-4"><span class="d-block mb-2">Regulatory approval</span><span class="fs-12 fw-normal text-muted text-truncate-1-line">Formula approvals and label approvals (COLA) per product.</span></h5></div>
                     <?= view('shared/validation-errors.php', ['errors' => array_values($errors), 'id' => 'approval-form-errors']) ?>
-                    <?= form_select($p, 'product', 'Product', $products, $approval['product_id'] ?? '', $errors, ['required' => true, 'blank' => 'Choose a product', 'name' => 'product_id',
+                    <?= form_picker($p, 'product', 'Product', 'product', $approval['product_id'] ?? '', $errors, ['required' => true, 'params' => ['retired' => 1], 'placeholder' => 'Choose a product', 'name' => 'product_id',
                         'extra' => ' hx-get="/approvals/configs" hx-trigger="change" hx-target="#approval-form-field-packaging-config-row" hx-swap="outerHTML"']) ?>
                     <?= form_select($p, 'kind', 'Kind', APPROVAL_KINDS, $approval['kind'] ?? 'formula', $errors, ['required' => true]) ?>
                     <?= view('approvals/partials/package-select.php', ['packages' => $packages, 'selected' => $approval['packaging_configuration_id'] ?? '', 'errors' => $errors]) ?>

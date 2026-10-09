@@ -20,7 +20,7 @@ plugin (PHP 8.3 + HTMX + Bootstrap 5.3 nxl, PostgreSQL 17 + MaluDB, Python MCP s
   The contract is the `maludb-os-integration` plugin; `app/os.php` holds every OS function.
 
 ## Rules that outlive the build
-- `php-patterns` governs PHP, `design-system` the screens (no modals, 375px), `chat-actions` the command bar. A new
+- `php-patterns` governs PHP, `design-system` the screens (no modals — a form chooses a record through the record picker, `app/picker.php`, the one sanctioned modal; 375px), `chat-actions` the command bar. A new
   screen or action goes into `docs/05-action-manifest.md` first; then `services/actions_mcp/build_manifest.py` (the
   standalone manifest) and `php bin/build_action_registry.php` (the kernel's registry) — commit both outputs.
 - Every POST handler: `require_post()` + `verify_csrf()` + `require_role(...)` + `log_activity()`. A handler keeps
@@ -36,3 +36,5 @@ plugin (PHP 8.3 + HTMX + Bootstrap 5.3 nxl, PostgreSQL 17 + MaluDB, Python MCP s
 ## Proofs
 `docs/os-adoption-proofs.md` (what was run, against which database, with what result). Standalone regression:
 `scripts/conformance.sh`, `services/.venv/bin/python -m records_mcp.test_client --suite`.
+- `scripts/prove-picker.sh` — the record picker (2026-10-09, `docs/18-record-picker.md`): the endpoint, the converted forms, a purchase order saved
+  through the hidden inputs; runs under `php -S` on a scratch checkout whose `config/.env` names `cidery_dev` (it refuses the live database).

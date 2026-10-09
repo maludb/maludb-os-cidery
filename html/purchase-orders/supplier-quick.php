@@ -47,5 +47,5 @@ if ($errors !== []) {
     http_response_code(422);
 }
 echo view('purchase-orders/partials/supplier-block.php', [
-    'suppliers' => purchasing_supplier_options($pdo), 'selected' => $selected, 'errors' => [], 'newSupplier' => $newSupplier, 'newErrors' => $errors,
+    'selected' => $selected, 'errors' => [], 'newSupplier' => $newSupplier, 'newErrors' => $errors,
 ]);

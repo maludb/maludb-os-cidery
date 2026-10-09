@@ -16,6 +16,7 @@ Pretty URLs map onto the php-patterns file set through one rewrite rule set in `
 | `/{feature}/{id}/edit` | `html/{feature}/form.php?id=` | Pre-filled form |
 | `/{feature}/{id}/{verb}` | `html/{feature}/{verb}.php?id=` | State change, POST only |
 | `/{parent}/{id}/{child}/...` | `html/{child}/...?{parent}_id=` | Nested resources (receipt lines, recipe versions) |
+| `/pick/?source=&q=&page=` | `html/pick/index.php` | The record picker's rows (a Pattern A fragment, not a screen): `app/pickers.php` names the sources, their roles and filter params |
 
 Screen ids are `{feature}-{kind}` (`lots-list`, `lot-view`, `lot-edit`). Element ids follow the design-decisions scheme (`lots-list-table`, `lot-form-field-expires-on`, `lot-row-42`). Every partial stamps `#page-content` with `data-screen`, `data-entity`, `data-record-id` so the command bar can resolve "that".
 

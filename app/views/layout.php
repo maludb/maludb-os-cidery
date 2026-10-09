@@ -126,6 +126,32 @@ $appName = (string) config('app.name', 'Cidery');
             </div>
         </footer>
     </main>
+    <?php /* The record picker (app/picker.php, assets/js/record-picker.js): the ONE modal that chooses a record for any picker field on the
+             screen — outside #page-content so swaps keep it. The second exemption to the no-modal rule, beside hx-confirm (design-system). */ ?>
+    <div class="modal fade" id="record-picker" tabindex="-1" aria-labelledby="record-picker-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-fullscreen-md-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="record-picker-title">Choose</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="record-picker-close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="record-picker-search p-3 border-bottom">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="feather-search"></i></span>
+                            <input type="search" class="form-control" id="record-picker-search" placeholder="Search…" autocomplete="off" aria-controls="record-picker-results"
+                                   hx-get="/pick/" hx-trigger="input changed delay:300ms, search, pickerload" hx-target="#record-picker-results" hx-swap="innerHTML"
+                                   hx-sync="this:replace" hx-vals="js:{...recordPickerValues()}" />
+                        </div>
+                    </div>
+                    <div id="record-picker-results" aria-live="polite"></div>
+                </div>
+                <div class="modal-footer d-none" id="record-picker-footer">
+                    <button type="button" class="btn btn-light-brand" id="record-picker-create-btn"><i class="feather-plus me-1"></i>New</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <?= view('assistant/bar.php', ['screen' => $screen]) ?>
     <script>
         // Keep --assistant-bar-height equal to the bar's real height (it grows when a reply
@@ -165,7 +191,7 @@ $appName = (string) config('app.name', 'Cidery');
         function isDirty() { var h = formHeader(); return !!(h && h.classList.contains('is-dirty')); }
         function markDirty(evt) {
             var h = formHeader(), form = evt.target && evt.target.form;
-            if (h && form && form.getAttribute('id') === h.dataset.form && evt.target.type !== 'hidden') { h.classList.add('is-dirty'); }
+            if (h && form && form.getAttribute('id') === h.dataset.form && (evt.target.type !== 'hidden' || evt.target.hasAttribute('data-picker-value'))) { h.classList.add('is-dirty'); }
         }
         document.addEventListener('input', markDirty);
         document.addEventListener('change', markDirty);
@@ -209,6 +235,7 @@ $appName = (string) config('app.name', 'Cidery');
     </script>
     <script src="/assets/vendors/js/vendors.min.js"></script>
     <script src="/assets/js/common-init.min.js"></script>
+    <script src="/assets/js/record-picker.js?v=20261009a"></script>
     <script src="/assets/js/theme-customizer-init.min.js"></script>
 </body>
 </html>

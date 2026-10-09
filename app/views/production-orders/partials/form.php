@@ -17,8 +17,8 @@ $volumeL = is_numeric($gal) ? from_display((float) $gal, 'L') : null;
                 <div class="card-body">
                     <div class="mb-4"><h5 class="fw-bold mb-0 me-4"><span class="d-block mb-2">Order</span><span class="fs-12 fw-normal text-muted text-truncate-1-line">Planned orders can change; releasing allocates materials. Volumes are in <?= e(display_unit('L')) ?>.</span></h5></div>
                     <?= view('shared/validation-errors.php', ['errors' => array_values($errors), 'id' => 'production-order-form-errors']) ?>
-                    <?= form_select($p, 'product', 'Product', $products, $order['product_id'] ?? '', $errors, [
-                        'required' => true, 'name' => 'product_id', 'blank' => 'Choose a product',
+                    <?= form_picker($p, 'product', 'Product', 'product_cider', $order['product_id'] ?? '', $errors, [
+                        'required' => true, 'name' => 'product_id', 'placeholder' => 'Choose a product',
                         'extra' => ' hx-get="/production-orders/recipe-options" hx-trigger="change" hx-target="#production-order-form-recipe-slot" hx-swap="innerHTML" hx-include="#production-order-form-field-planned-volume-gal"',
                     ]) ?>
                     <div id="production-order-form-recipe-slot"><?= view('production-orders/recipe-options.php', ['recipes' => $recipes, 'selected' => $order['recipe_version_id'] ?? null, 'volumeGal' => $gal, 'oob' => false, 'errors' => $errors]) ?></div>

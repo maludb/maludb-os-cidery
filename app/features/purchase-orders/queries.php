@@ -260,3 +260,28 @@ function find_supplier_performance(PDO $pdo, int $supplierId): array
     $statement->execute(['id' => $supplierId]);
     return $statement->fetch() ?: ['receipts' => 0, 'late_receipts' => 0, 'short_lines' => 0, 'damaged_lines' => 0];
 }
+
+/**
+ * Purchasable items for the item picker (app/pickers.php `item`): active items of the classes flagged purchasable,
+ * searched by code or name; with a supplier, the items the supplier lists come first with their SKU and terms.
+ * Rows: id, code, name, item_class, class_name, base_unit_code, listed, supplier_sku, purchase_unit_code, last_price.
+ */
+function find_purchasable_items(PDO $pdo, string $search = '', ?int $supplierId = null, int $page = 1): array
+{
+    $where = ' WHERE i.active AND c.purchasable AND c.active';
+    $params = ['supplier' => $supplierId];
+    if ($search !== '') {
+        $where .= ' AND (i.code ILIKE :s OR i.name ILIKE :s)';
+        $params['s'] = '%' . $search . '%';
+    }
+    $join = ' FROM app.items i JOIN app.item_classes c ON c.code = i.item_class'
+        . ' LEFT JOIN app.supplier_items si ON si.item_id = i.id AND si.active AND si.supplier_id = CAST(:supplier AS bigint)';
+    return paged_query(
+        $pdo,
+        'SELECT i.id, i.code, i.name, i.item_class, c.name AS class_name, i.base_unit_code, (si.id IS NOT NULL) AS listed, si.supplier_sku, si.purchase_unit_code, si.last_price'
+        . $join . $where . ' ORDER BY (si.id IS NULL), i.code',
+        'SELECT count(*)' . $join . $where,
+        $params,
+        $page
+    );
+}

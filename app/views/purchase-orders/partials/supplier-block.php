@@ -2,7 +2,8 @@
 /**
  * The supplier field of the purchase order form, with an inline "New supplier" panel (no modal): the panel posts on its own
  * to /purchase-orders/supplier-quick and this block comes back with the new supplier selected.
- * @var array $suppliers  id => name  @var mixed $selected  @var array $errors  @var ?array $newSupplier  panel values when open  @var array $newErrors
+ * The supplier is a record picker (app/picker.php, source `supplier`); the picker's own "New supplier" opens the same inline panel.
+ * @var mixed $selected  @var array $errors  @var ?array $newSupplier  panel values when open  @var array $newErrors
  */
 $prefix = 'purchase-order-form';
 $newSupplier = $newSupplier ?? null;
@@ -15,17 +16,11 @@ $nerr = static fn(string $f) => isset($newErrors[$f]) ? '<div class="invalid-fee
 $ninv = static fn(string $f) => isset($newErrors[$f]) ? ' is-invalid' : '';
 ?>
 <div id="<?= e($prefix) ?>-supplier-block">
-    <?= form_row_open($prefix, 'supplier_id', 'Supplier') ?>
-        <div class="input-group">
-            <select class="form-select<?= invalid_class($errors, 'supplier_id') ?>" id="<?= e($id) ?>" name="supplier_id" required>
-                <option value="">Choose a supplier</option>
-                <?php foreach ($suppliers as $sid => $name): ?><option value="<?= e($sid) ?>"<?= (string) $selected === (string) $sid ? ' selected' : '' ?>><?= e($name) ?></option><?php endforeach; ?>
-            </select>
-            <button type="button" class="btn btn-light-brand" id="<?= e($prefix) ?>-new-supplier-btn" aria-controls="<?= e($panel) ?>"
-                    hx-on:click="document.getElementById('<?= e($panel) ?>').classList.toggle('d-none'); document.getElementById('<?= e($panel) ?>-name').focus()"><i class="feather-plus me-1"></i>New supplier</button>
-        </div>
-        <?= isset($errors['supplier_id']) ? '<div class="invalid-feedback d-block">' . e($errors['supplier_id']) . '</div>' : '' ?>
-    <?= form_row_close() ?>
+    <?= form_picker($prefix, 'supplier_id', 'Supplier', 'supplier', $selected, $errors, [
+        'required' => true, 'placeholder' => 'Choose a supplier', 'create' => ['label' => 'New supplier', 'panel' => '#' . $panel],
+        'append' => '<button type="button" class="btn btn-light-brand" id="' . e($prefix) . '-new-supplier-btn" aria-controls="' . e($panel) . '"'
+            . ' hx-on:click="document.getElementById(\'' . e($panel) . '\').classList.toggle(\'d-none\'); document.getElementById(\'' . e($panel) . '-name\').focus()"><i class="feather-plus me-1"></i>New supplier</button>',
+    ]) ?>
     <div class="border rounded p-3 mb-4<?= $newSupplier === null ? ' d-none' : '' ?>" id="<?= e($panel) ?>">
         <div class="fw-semibold mb-1">New supplier</div>
         <div class="fs-12 text-muted mb-3">Added to the supplier list and selected for this order. Address, notes and the items they supply can be completed later on the supplier page.</div>

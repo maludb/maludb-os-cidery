@@ -145,3 +145,15 @@ function retire_product(PDO $pdo, int $id): array
     $statement->execute(['id' => $id]);
     return $statement->fetch();
 }
+
+/** Products that are not retired, searched by name, code or style — the product picker's default list (app/pickers.php). */
+function find_products_not_retired(PDO $pdo, string $search = '', int $page = 1): array
+{
+    $where = " WHERE p.status <> 'retired'";
+    $params = [];
+    if ($search !== '') {
+        $where .= ' AND (p.name ILIKE :s OR p.code ILIKE :s OR p.style ILIKE :s)';
+        $params['s'] = '%' . $search . '%';
+    }
+    return paged_query($pdo, 'SELECT ' . PRODUCT_COLUMNS . ' FROM app.products p' . $where . ' ORDER BY p.name', 'SELECT count(*) FROM app.products p' . $where, $params, $page);
+}

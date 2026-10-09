@@ -12,7 +12,7 @@ $p = 'keg-return-form';
                     <?= view('shared/validation-errors.php', ['errors' => array_values($errors), 'id' => 'keg-return-form-errors']) ?>
                     <?php if (!$hasLocation): ?><div class="alert alert-warning" id="keg-return-form-no-location">No packaged goods location exists, so kegs cannot be returned yet. Add one under Locations.</div><?php endif; ?>
                     <?= form_textarea($p, 'serials', 'Serials', $input['serials'] ?? '', $errors, ['rows' => 8, 'placeholder' => "KEG-0001\nKEG-0002"]) ?>
-                    <?= form_select($p, 'customer_id', 'Returned by', $customers, $input['customer_id'] ?? '', $errors, ['blank' => 'No customer', 'last' => true]) ?>
+                    <?= form_picker($p, 'customer_id', 'Returned by', 'customer', $input['customer_id'] ?? '', $errors, ['placeholder' => 'No customer', 'last' => true]) ?>
                 </div>
             </div>
             <?php if ($results !== []): ?>

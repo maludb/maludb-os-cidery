@@ -167,6 +167,19 @@ function form_select(string $prefix, string $name, string $label, array $options
         . form_row_close($opts['help'] ?? null);
 }
 
+/**
+ * A record chosen through the picker (app/picker.php) in the standard form row: the hidden input keeps the select's
+ * name and id. $opts: placeholder, title, params, include, required, disabled, extra, append, create, help, last, name.
+ */
+function form_picker(string $prefix, string $name, string $label, string $source, mixed $value, array $errors = [], array $opts = []): string
+{
+    $id = field_id($prefix, $name);
+    return form_row_open($prefix, $name, $label, !empty($opts['last']))
+        . picker_field(['id' => $id, 'name' => $opts['name'] ?? $name, 'source' => $source, 'value' => $value, 'invalid' => isset($errors[$name]), 'labelledby' => $id . '-label'] + $opts)
+        . (isset($errors[$name]) ? '<div class="invalid-feedback d-block">' . e($errors[$name]) . '</div>' : '')
+        . form_row_close($opts['help'] ?? null);
+}
+
 function form_textarea(string $prefix, string $name, string $label, mixed $value, array $errors = [], array $opts = []): string
 {
     $id = field_id($prefix, $name);

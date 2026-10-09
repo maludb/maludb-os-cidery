@@ -29,7 +29,7 @@ $lineInclude = '#removal-form-field-direction, #removal-form-field-from-location
                     <?= form_select($p, 'destination_kind', 'Destination', $isReturn ? REMOVAL_IN_DESTINATIONS : REMOVAL_OUT_DESTINATIONS, $dest, $errors, ['required' => true, 'extra' => $isReturn ? '' : $refresh('destination'),
                         'help' => removal_determines_tax($direction, $dest) ? 'Tax is determined when this removal posts.' : ($isReturn ? 'Tax-paid goods returned to bond.' : 'No tax is determined for this destination.')]) ?>
                     <?php if ($showCustomer): ?>
-                        <?= form_select($p, 'customer_id', 'Customer', $customers, $removal['customer_id'] ?? '', $errors, ['required' => true, 'blank' => 'Choose a customer', 'extra' => $refresh('customer'),
+                        <?= form_picker($p, 'customer_id', 'Customer', 'customer', $removal['customer_id'] ?? '', $errors, ['required' => true, 'placeholder' => 'Choose a customer', 'extra' => $refresh('customer'),
                             'help' => $isReturn ? 'Lots ever removed to this customer can come back.' : 'Choosing a customer sets the destination to their default.']) ?>
                     <?php endif; ?>
                     <?php if (!$isReturn): ?>

@@ -10,15 +10,12 @@ $inv = static fn(string $name) => isset($lineErrors[$name]) ? ' is-invalid' : ''
 <div class="po-line border rounded p-3 mb-3" id="<?= e($p) ?>">
     <div class="row g-3 align-items-end">
         <div class="col-12 col-md-4">
-            <label class="fw-semibold fs-12" for="<?= e($p) ?>-item-id">Item</label>
-            <select class="form-select<?= $inv('item_id') ?>" id="<?= e($p) ?>-item-id" name="<?= e($field('item_id')) ?>"
-                    hx-get="/purchase-orders/line-row" hx-trigger="change" hx-target="#<?= e($p) ?>" hx-swap="outerHTML"
-                    hx-include="#<?= e($p) ?>, #purchase-order-form-field-supplier-id" hx-vals='{"n": "<?= e($n) ?>"}'>
-                <option value="">Choose an item</option>
-                <?php foreach ($catalog as $itemId => $option): ?>
-                    <option value="<?= e($itemId) ?>"<?= (int) ($line['item_id'] ?? 0) === $itemId ? ' selected' : '' ?>><?= e($option['code'] . ' — ' . $option['name']) ?></option>
-                <?php endforeach; ?>
-            </select><?= $err('item_id') ?>
+            <label class="fw-semibold fs-12" for="<?= e($p) ?>-item-id-open" id="<?= e($p) ?>-item-id-label">Item</label>
+            <?= picker_field(['id' => $p . '-item-id', 'name' => $field('item_id'), 'source' => 'item', 'value' => $line['item_id'] ?? null, 'required' => true,
+                'label' => $item === null ? null : $item['code'] . ' — ' . $item['name'], 'placeholder' => 'Choose an item', 'invalid' => isset($lineErrors['item_id']),
+                'labelledby' => $p . '-item-id-label', 'include' => '#purchase-order-form-field-supplier-id',
+                'extra' => ' hx-get="/purchase-orders/line-row" hx-trigger="change" hx-target="#' . e($p) . '" hx-swap="outerHTML"'
+                    . ' hx-include="#' . e($p) . ', #purchase-order-form-field-supplier-id" hx-vals=\'{"n": "' . e($n) . '"}\'']) ?><?= $err('item_id') ?>
         </div>
         <div class="col-6 col-md-2">
             <label class="fw-semibold fs-12" for="<?= e($p) ?>-qty-ordered">Quantity</label>
